@@ -13,7 +13,7 @@ java -jar "/home/andymememe/Program/JZipTool/dist/JZipTool.jar"
 
 ## Usage
 ```shell
-java -jar "/home/andymememe/Program/JZipTool/dist/JZipTool.jar" [壓縮檔的位置（可省略）]
+java -jar "/home/andymememe/Program/JZipTool/dist/JZipTool.jar" [Zip file (Optional)]
 ```
 
 ## Help
