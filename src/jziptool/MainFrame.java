@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
 import jziptool.treer.TreeManipulator;
 import jziptool.zipper.*;
 
