@@ -39,7 +39,8 @@ public class ZipManipulator {
         
         try {
             _zipFile = new ZipFile(zipFile);
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             result = false;
             Logger.getLogger(ZipManipulator.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -87,7 +88,8 @@ public class ZipManipulator {
                     /* See if file exist or not */
                     if (!newFile.exists()) {
                         newFile.createNewFile();
-                    } else {
+                    }
+                    else {
                         Object[] option = {"覆蓋", "更名", "跳過"};
                         String msg = "「" + newFile.getName() + "」重複了，請選擇下一步:";
                         String title = "發現重複檔案";
@@ -137,7 +139,8 @@ public class ZipManipulator {
                 {
                     try {
                         result.createNewFile(); // Create new file
-                    } catch (IOException ex) {
+                    }
+                    catch (IOException ex) {
                         result = null;
                         Logger.getLogger(ZipManipulator.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -150,7 +153,8 @@ public class ZipManipulator {
                 if(extPosition != -1){
                     originalPathWithoutExt = result.getAbsolutePath().substring(0, extPosition); // Path without extension
                     ext = result.getAbsolutePath().substring(extPosition); // Extension
-                }else{
+                }
+                else{
                     originalPathWithoutExt = result.getAbsolutePath();
                     ext = "";
                 }
@@ -163,7 +167,8 @@ public class ZipManipulator {
                 {
                     try {
                         result.createNewFile();
-                    } catch (IOException ex) {
+                    }
+                    catch (IOException ex) {
                         result = null;
                         Logger.getLogger(ZipManipulator.class.getName()).log(Level.SEVERE, null, ex);
                     }

@@ -49,12 +49,12 @@ public class MainFrame extends javax.swing.JFrame {
         });
         
         if(args.length > 0){
-            zipFileOpen(new File(args[0]));
+            _zipFileOpen(new File(args[0]));
         }
     }
 
     /* Open zip file */
-    private void zipFileOpen(File zipFile){
+    private void _zipFileOpen(File zipFile){
         /* Check is folder exist or not */
         if(!zipFile.exists()){
             JOptionPane.showMessageDialog(null, "沒有「" + zipFile.getName() + "」這個檔案喔!", "找不到檔案", JOptionPane.ERROR_MESSAGE);
@@ -144,7 +144,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         fileChooser.showOpenDialog(null);
         if(fileChooser.getSelectedFile() != null){
-            zipFileOpen(fileChooser.getSelectedFile());
+            _zipFileOpen(fileChooser.getSelectedFile());
         }
     }//GEN-LAST:event_openBtnMouseClicked
 
