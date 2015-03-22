@@ -64,8 +64,8 @@ public class ZipManipulator {
     /* Extract a zip file */
     public boolean extractZip(String dir){
         boolean result = true;
-        BufferedOutputStream bufferOutStream = null;
-        BufferedInputStream bufferInStream = null;
+        BufferedOutputStream bufferOutStream;
+        BufferedInputStream bufferInStream;
         byte[] buffer = new byte[2048];
         ZipEntry entry;
         int count;

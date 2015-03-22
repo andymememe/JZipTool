@@ -6,7 +6,6 @@
 package jziptool;
 
 import java.io.File;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultTreeModel;
@@ -22,6 +21,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     /**
      * Creates new form MainFrame
+     * @param args
      */
     public MainFrame(String[] args) {
         initComponents();
@@ -189,10 +189,8 @@ public class MainFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainFrame(args).setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new MainFrame(args).setVisible(true);
         });
     }
 

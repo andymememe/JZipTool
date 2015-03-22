@@ -8,14 +8,13 @@ package jziptool.treer;
 import java.util.Enumeration;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
 
 /**
  *
  * @author andymememe
  */
 public class TreeManipulator {
-    private DefaultTreeModel _treeModel;
+    private final DefaultTreeModel _treeModel;
     private final DefaultMutableTreeNode EMPTY = new DefaultMutableTreeNode("[empty]");
     private DefaultMutableTreeNode _root;
     
