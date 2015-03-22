@@ -4,8 +4,8 @@ A easy zip viewer and unzip tool.<br>
 (***In Traditional Chinese***)
 
 ## Requirement
-**JRE 1.8**
-**jtar** [Download](https://code.google.com/p/jtar/)(**Apache License 2.0**)
+**JRE 1.8**<br>
+**jtar** ([Download](https://code.google.com/p/jtar/))(**Apache License 2.0**)
 
 ## Download
 Go to "**Release**" page.
