@@ -5,9 +5,10 @@ A easy zip viewer and unzip tool.<br>
 
 ## Requirement
 **JRE 1.8**
+**jtar** [Download](https://code.google.com/p/jtar/)(**Apache License 2.0**)
 
 ## Download
-[Link](https://github.com/andymememe/JZipTool/releases/download/v0.1.0-alpha/JZipTool-v0.1.0-alpha-bin.tar.gz)
+Go to "**Release**" page.
 
 ## Execution
 ```shell
