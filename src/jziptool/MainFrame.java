@@ -8,16 +8,18 @@ package jziptool;
 import java.io.File;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 import jziptool.treer.TreeManipulator;
-import jziptool.zipper.ZipManipulator;
+import jziptool.zipper.*;
 
 /**
  *
  * @author andymememe
  */
 public class MainFrame extends javax.swing.JFrame {
-    private ZipManipulator _zipManipulator;
+    private ComManipulator _comManipulator;
     
     /**
      * Creates new form MainFrame
@@ -25,42 +27,55 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame(String[] args) {
         initComponents();
-        _zipManipulator = new ZipManipulator(new TreeManipulator(new DefaultTreeModel(null)));
         
-        /* Set fileTree's model */
-        fileTree.setModel(_zipManipulator.getZipTreeModel());
+        fileTree.setModel(null);
         
         /* Set fileChooser's filter */
         fileChooser.setFileFilter(new FileFilter() {
-
+            private final FileNameExtensionFilter filter =new FileNameExtensionFilter("壓縮檔","zip", "tar");
+            
             @Override
             public boolean accept(File f) {
                 if (f.isDirectory()) {
                     return true;
                 } else {
-                    return f.getName().toLowerCase().endsWith(".zip");
+                    return filter.accept(f);
                 }
             }
 
             @Override
             public String getDescription() {
-                return "Zip檔案 (*.zip)";
+                return filter.getDescription();
             }
         });
         
         if(args.length > 0){
-            _zipFileOpen(new File(args[0]));
+            _comFileOpen(new File(args[0]));
         }
     }
 
     /* Open zip file */
-    private void _zipFileOpen(File zipFile){
+    private void _comFileOpen(File file){
         /* Check is folder exist or not */
-        if(!zipFile.exists()){
-            JOptionPane.showMessageDialog(null, "沒有「" + zipFile.getName() + "」這個檔案喔!", "找不到檔案", JOptionPane.ERROR_MESSAGE);
+        if(!file.exists()){
+            JOptionPane.showMessageDialog(null, "沒有「" + file.getName() + "」這個檔案喔!", "找不到檔案", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        _zipManipulator.openZip(zipFile);
+        String[] fileName;
+        fileName = fileChooser.getSelectedFile().getName().split("\\.");
+        switch(fileName[fileName.length - 1]){
+            case "tar":
+                _comManipulator = new TarManipulator(new TreeManipulator(new DefaultTreeModel(null)));
+                break;
+
+            case "zip":
+                _comManipulator = new ZipManipulator(new TreeManipulator(new DefaultTreeModel(null)));
+                break;
+        }
+        _comManipulator.openCom(file);
+        
+        /* Set fileTree's model */
+        fileTree.setModel(_comManipulator.getTreeModel());
         extractBtn.setEnabled(true);
     }
     
@@ -144,7 +159,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         fileChooser.showOpenDialog(null);
         if(fileChooser.getSelectedFile() != null){
-            _zipFileOpen(fileChooser.getSelectedFile());
+            _comFileOpen(fileChooser.getSelectedFile());
         }
     }//GEN-LAST:event_openBtnMouseClicked
 
@@ -152,7 +167,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         dirChooser.showOpenDialog(null);
         if(dirChooser.getSelectedFile() != null){
-            if(_zipManipulator.extractZip(dirChooser.getSelectedFile().getAbsolutePath())){
+            if(_comManipulator.extractCom(dirChooser.getSelectedFile().getAbsolutePath())){
                 JOptionPane.showMessageDialog(null, "解壓縮成功囉！", "解壓縮成功", JOptionPane.INFORMATION_MESSAGE);
             }
             else{

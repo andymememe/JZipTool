@@ -17,23 +17,22 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.swing.JOptionPane;
-import javax.swing.tree.DefaultTreeModel;
 import jziptool.treer.TreeManipulator;
 
 /**
  *
  * @author andymememe
  */
-public class ZipManipulator {
-    private final TreeManipulator _treeManipulator;
+public class ZipManipulator extends ComManipulator {
     private ZipFile _zipFile;
-    
-    public ZipManipulator(TreeManipulator treeMan){
-        _treeManipulator = treeMan; 
+
+    public ZipManipulator(TreeManipulator treeMan) {
+        super(treeMan);
     }
     
     /* Open a zip file */
-    public boolean openZip(File file){
+    @Override
+    public boolean openCom(File file){
         boolean result = true;
         ZipEntry entry;
         
@@ -63,7 +62,8 @@ public class ZipManipulator {
     }
     
     /* Extract a zip file */
-    public boolean extractZip(String dir){
+    @Override
+    public boolean extractCom(String dir){
         boolean result = true;
         BufferedOutputStream bufferOutStream;
         BufferedInputStream bufferInStream;
@@ -118,70 +118,5 @@ public class ZipManipulator {
             }
         }
         return result;
-    }
-    
-    /* Make new folder */
-    private boolean _doMkDir(String rootName, String docName){
-        File newDir = new File(rootName + File.separator + docName);
-        /* If dirctory is exist or not */
-        if (!newDir.exists()) {
-            return newDir.mkdirs();
-        }
-        return true;
-    }
-    
-    /* When find exist file, what should this application do */
-    private File _doReplaceJob(File newFile, int replaceResult) {
-        File result = newFile;
-        switch (replaceResult) {
-            case JOptionPane.YES_OPTION: // Replace
-                result.delete(); // Delete old file
-                {
-                    try {
-                        result.createNewFile(); // Create new file
-                    }
-                    catch (IOException ex) {
-                        result = null;
-                        Logger.getLogger(ZipManipulator.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                break;
-            case JOptionPane.NO_OPTION: // New name
-                int extPosition = result.getAbsolutePath().lastIndexOf("."); // Extension position
-                int countName = 1;
-                String originalPathWithoutExt, ext;
-                if(extPosition != -1){
-                    originalPathWithoutExt = result.getAbsolutePath().substring(0, extPosition); // Path without extension
-                    ext = result.getAbsolutePath().substring(extPosition); // Extension
-                }
-                else{
-                    originalPathWithoutExt = result.getAbsolutePath();
-                    ext = "";
-                }
-                
-                /* Make a new name */
-                do {
-                    result = new File(originalPathWithoutExt + "(" + countName + ")" + ext);
-                    countName++;
-                } while (result.exists());
-                {
-                    try {
-                        result.createNewFile();
-                    }
-                    catch (IOException ex) {
-                        result = null;
-                        Logger.getLogger(ZipManipulator.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                break;
-            case JOptionPane.CANCEL_OPTION: // Skip
-                break;
-        }
-        return result;
-    }
-    
-    /* Get tree model */
-    public DefaultTreeModel getZipTreeModel(){
-        return _treeManipulator.getModel();
     }
 }
