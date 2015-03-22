@@ -5,7 +5,7 @@ A easy zip viewer and unzip tool.<br>
 
 ## Requirement
 **JRE 1.8**<br>
-**jtar** ([Download](https://code.google.com/p/jtar/))(**Apache License 2.0**)
+**jtar** ([Link](https://code.google.com/p/jtar/))(**Apache License 2.0**)
 
 ## Download
 Go to "**Release**" page.
@@ -17,7 +17,7 @@ java -jar "/home/andymememe/Program/JZipTool/dist/JZipTool.jar"
 
 ## Usage
 ```shell
-java -jar "/home/andymememe/Program/JZipTool/dist/JZipTool.jar" [Zip file (Optional)]
+java -jar "/home/andymememe/Program/JZipTool/dist/JZipTool.jar" [File (Optional)]
 ```
 
 ## Help
