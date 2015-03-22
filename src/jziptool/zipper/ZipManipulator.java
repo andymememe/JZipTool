@@ -33,18 +33,18 @@ public class ZipManipulator {
     }
     
     /* Open a zip file */
-    public boolean openZip(File zipFile){
+    public boolean openZip(File file){
         boolean result = true;
         ZipEntry entry;
         
         try {
-            _zipFile = new ZipFile(zipFile);
+            _zipFile = new ZipFile(file);
         }
         catch (IOException ex) {
             result = false;
             Logger.getLogger(ZipManipulator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        _treeManipulator.generateRoot(zipFile.getName());
+        _treeManipulator.generateRoot(file.getName());
         Enumeration<? extends ZipEntry> entries = _zipFile.entries();
         while(entries.hasMoreElements()){
             entry = entries.nextElement();
