@@ -5,8 +5,6 @@
  */
 package jziptool;
 
-import jziptool.zipper.ZipManipulator;
-
 /**
  *
  * @author andymememe
