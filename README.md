@@ -12,15 +12,15 @@ Go to "**Release**" page.
 
 ## Execution
 ```shell
-java -jar "/home/andymememe/Program/JZipTool/dist/JZipTool.jar"
+java -jar "JZipTool.jar"
 ```
 
 ## Usage
 ```shell
-java -jar "/home/andymememe/Program/JZipTool/dist/JZipTool.jar" [File (Optional)]
+java -jar "JZipTool.jar" [File (Optional)]
 ```
 
 ## Help
 ```shell
-java -jar "/home/andymememe/Program/JZipTool/dist/JZipTool.jar" -h/--help
+java -jar "JZipTool.jar" -h/--help
 ```
