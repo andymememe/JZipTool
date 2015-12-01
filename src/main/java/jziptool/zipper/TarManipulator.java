@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -39,7 +40,17 @@ public class TarManipulator extends ComManipulator {
         try {
             tarInputStream = new TarInputStream(new BufferedInputStream(new FileInputStream(_file)));
             while((entry = tarInputStream.getNextEntry()) != null){
-                String[] structure = entry.getName().split(File.separator);
+                /* Fix Chinese Error */
+                char[] intFilename = entry.getName().toCharArray();
+                byte[] byteFilename = new byte[intFilename.length];
+                int i = 0;
+                for(int aChar : intFilename) {
+                    aChar = aChar & 0xFF;
+                    byteFilename[i++] = (byte)aChar;
+                }
+                String filename = new String(byteFilename);
+                
+                String[] structure = filename.split(File.separator);
                 String parent;
                 
                 if(structure.length == 1){
@@ -71,14 +82,25 @@ public class TarManipulator extends ComManipulator {
             tarInputStream = new TarInputStream(new BufferedInputStream(new FileInputStream(_file)));
             TarEntry entry;
             while((entry = tarInputStream.getNextEntry()) != null) {
-                /* Entry is a dirctory */
-                if(entry.isDirectory()){
-                    result = _doMkDir(dir, entry.getName());
+                char[] intFilename = entry.getName().toCharArray();
+                byte[] byteFilename = new byte[intFilename.length];
+                int i = 0;
+                /* Fix Chinese Error */
+                for(int aChar : intFilename) {
+                    aChar = aChar & 0xFF;
+                    byteFilename[i++] = (byte)aChar;
                 }
-                /* Entry is a file */
+                String filename = new String(byteFilename);
+                if(filename.startsWith("PaxHeader")){
+                    continue;
+                }
+                /* Entry is intFilename dirctory */
+                else if(entry.isDirectory()){
+                    result = _doMkDir(dir, filename);
+                }
+                /* Entry is intFilename file */
                 else{
-                    File newFile = new File(dir + File.separator + entry.getName());
-                    
+                    File newFile = new File(dir + File.separator + filename);
                     /* See if file exist or not */
                     if (!newFile.exists()) {
                         newFile.createNewFile();
