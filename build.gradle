@@ -14,6 +14,13 @@ if (!hasProperty('mainClass')) {
     ext.mainClass = 'jziptool.Main'
 }
 
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest.attributes(
+           'Main-Class': 'jziptool.Main'
+    )
+}
+
 repositories {
     mavenCentral()
     // You may define additional repositories, or even remove "mavenCentral()".
