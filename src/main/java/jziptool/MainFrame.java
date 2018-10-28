@@ -18,21 +18,24 @@ import jziptool.zipper.*;
  * @author andymememe
  */
 public class MainFrame extends javax.swing.JFrame {
+
     private ComManipulator _comManipulator;
-    
+
     /**
      * Creates new form MainFrame
+     *
      * @param args
      */
     public MainFrame(String[] args) {
         initComponents();
-        
+
         fileTree.setModel(null);
-        
+
         /* Set fileChooser's filter */
         fileChooser.setFileFilter(new FileFilter() {
-            private final FileNameExtensionFilter filter =new FileNameExtensionFilter("壓縮檔","zip", "tar");
-            
+            private final FileNameExtensionFilter filter
+                    = new FileNameExtensionFilter("壓縮檔", "zip", "tar");
+
             @Override
             public boolean accept(File f) {
                 if (f.isDirectory()) {
@@ -47,37 +50,42 @@ public class MainFrame extends javax.swing.JFrame {
                 return filter.getDescription();
             }
         });
-        
-        if(args.length > 0){
+
+        if (args.length > 0) {
             _comFileOpen(new File(args[0]));
         }
     }
 
     /* Open zip file */
-    private void _comFileOpen(File file){
+    private void _comFileOpen(File file) {
         /* Check is folder exist or not */
-        if(!file.exists()){
-            JOptionPane.showMessageDialog(null, "沒有「" + file.getName() + "」這個檔案喔!", "找不到檔案", JOptionPane.ERROR_MESSAGE);
+        if (!file.exists()) {
+            JOptionPane.showMessageDialog(null,
+                    "沒有「" + file.getName() + "」這個檔案喔!", "找不到檔案",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
         String[] fileName;
         fileName = fileChooser.getSelectedFile().getName().split("\\.");
-        switch(fileName[fileName.length - 1]){
+        switch (fileName[fileName.length - 1]) {
             case "tar":
-                _comManipulator = new TarManipulator(new TreeManipulator(new DefaultTreeModel(null)));
+                _comManipulator = new TarManipulator(
+                        new TreeManipulator(new DefaultTreeModel(null)));
                 break;
 
             case "zip":
-                _comManipulator = new ZipManipulator(new TreeManipulator(new DefaultTreeModel(null)));
+                _comManipulator = new ZipManipulator(
+                        new TreeManipulator(
+                                new DefaultTreeModel(null)));
                 break;
         }
         _comManipulator.openCom(file);
-        
+
         /* Set fileTree's model */
         fileTree.setModel(_comManipulator.getTreeModel());
         extractBtn.setEnabled(true);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -157,7 +165,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void openBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openBtnMouseClicked
         // TODO add your handling code here:
         fileChooser.showOpenDialog(null);
-        if(fileChooser.getSelectedFile() != null){
+        if (fileChooser.getSelectedFile() != null) {
             _comFileOpen(fileChooser.getSelectedFile());
         }
     }//GEN-LAST:event_openBtnMouseClicked
@@ -165,12 +173,17 @@ public class MainFrame extends javax.swing.JFrame {
     private void extractBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_extractBtnMouseClicked
         // TODO add your handling code here:
         dirChooser.showOpenDialog(null);
-        if(dirChooser.getSelectedFile() != null){
-            if(_comManipulator.extractCom(dirChooser.getSelectedFile().getAbsolutePath())){
-                JOptionPane.showMessageDialog(null, "解壓縮成功囉！", "解壓縮成功", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else{
-               JOptionPane.showMessageDialog(null, "嗚~解壓縮失敗了！", "解壓縮失敗", JOptionPane.ERROR_MESSAGE); 
+        if (dirChooser.getSelectedFile() != null) {
+            if (_comManipulator.extractCom(dirChooser.getSelectedFile().getAbsolutePath())) {
+                JOptionPane.showMessageDialog(null,
+                        "解壓縮成功！",
+                        "解壓縮成功",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "解壓縮失敗，請重試!",
+                        "解壓縮失敗",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_extractBtnMouseClicked
