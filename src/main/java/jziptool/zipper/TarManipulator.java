@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -24,8 +23,9 @@ import org.xeustechnologies.jtar.*;
  * @author andymememe
  */
 public class TarManipulator extends ComManipulator {
+
     private File _file;
-    
+
     public TarManipulator(TreeManipulator treeMan) {
         super(treeMan);
     }
@@ -39,32 +39,30 @@ public class TarManipulator extends ComManipulator {
         _treeManipulator.generateRoot(_file.getName());
         try {
             tarInputStream = new TarInputStream(new BufferedInputStream(new FileInputStream(_file)));
-            while((entry = tarInputStream.getNextEntry()) != null){
+            while ((entry = tarInputStream.getNextEntry()) != null) {
                 /* Fix Chinese Error */
                 char[] intFilename = entry.getName().toCharArray();
                 byte[] byteFilename = new byte[intFilename.length];
                 int i = 0;
-                for(int aChar : intFilename) {
+                for (int aChar : intFilename) {
                     aChar = aChar & 0xFF;
-                    byteFilename[i++] = (byte)aChar;
+                    byteFilename[i++] = (byte) aChar;
                 }
                 String filename = new String(byteFilename);
-                
+
                 String[] structure = filename.split(File.separator);
                 String parent;
-                
-                if(structure.length == 1){
+
+                if (structure.length == 1) {
                     parent = null;
-                }
-                else{
+                } else {
                     parent = structure[structure.length - 2];
                 }
 
                 _treeManipulator.addEntryNode(structure[structure.length - 1], parent, structure.length, entry.isDirectory());
             }
             tarInputStream.close();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             result = false;
             Logger.getLogger(TarManipulator.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -81,55 +79,49 @@ public class TarManipulator extends ComManipulator {
         try {
             tarInputStream = new TarInputStream(new BufferedInputStream(new FileInputStream(_file)));
             TarEntry entry;
-            while((entry = tarInputStream.getNextEntry()) != null) {
+            while ((entry = tarInputStream.getNextEntry()) != null) {
                 char[] intFilename = entry.getName().toCharArray();
                 byte[] byteFilename = new byte[intFilename.length];
                 int i = 0;
                 /* Fix Chinese Error */
-                for(int aChar : intFilename) {
+                for (int aChar : intFilename) {
                     aChar = aChar & 0xFF;
-                    byteFilename[i++] = (byte)aChar;
+                    byteFilename[i++] = (byte) aChar;
                 }
                 String filename = new String(byteFilename);
-                if(filename.startsWith("PaxHeader")){
+                if (filename.startsWith("PaxHeader")) {
                     continue;
-                }
-                /* Entry is intFilename dirctory */
-                else if(entry.isDirectory()){
+                } /* Entry is intFilename dirctory */ else if (entry.isDirectory()) {
                     result = _doMkDir(dir, filename);
-                }
-                /* Entry is intFilename file */
-                else{
+                } /* Entry is intFilename file */ else {
                     File newFile = new File(dir + File.separator + filename);
                     /* See if file exist or not */
                     if (!newFile.exists()) {
                         newFile.createNewFile();
-                    }
-                    else {
+                    } else {
                         Object[] option = {"覆蓋", "更名", "跳過"};
                         String msg = "「" + newFile.getName() + "」重複了，請選擇下一步:";
                         String title = "發現重複檔案";
                         int replaceResult = JOptionPane.showOptionDialog(null, msg, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, option, option[0]);
-                        
+
                         newFile = _doReplaceJob(newFile, replaceResult);
                         if (newFile == null) {
                             return false;
                         }
                     }
-                    
+
                     bufferOutputStream = new BufferedOutputStream(new FileOutputStream(newFile));
-                    
-                    while((count = tarInputStream.read(data)) != -1){
+
+                    while ((count = tarInputStream.read(data)) != -1) {
                         bufferOutputStream.write(data, 0, count);
                     }
-                    
+
                     bufferOutputStream.flush();
                     bufferOutputStream.close();
                 }
             }
             tarInputStream.close();
-        }
-        catch (IOException | HeadlessException ex) {
+        } catch (IOException | HeadlessException ex) {
             result = false;
             Logger.getLogger(TarManipulator.class.getName()).log(Level.SEVERE, null, ex);
         }

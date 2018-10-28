@@ -17,13 +17,12 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
         /* View */
-        if(args.length > 0 && (args[0].equals("-h") || args[0].equals("--help"))){
+        if (args.length > 0 && (args[0].equals("-h") || args[0].equals("--help"))) {
             System.out.println("[執行] : JZipTool.jar [壓縮檔的位置（可省略）]");
-        }
-        else{    
+        } else {
             MainFrame main = new MainFrame(args);
             main.setVisible(true);
         }
     }
-    
+
 }
